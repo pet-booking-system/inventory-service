@@ -2,7 +2,8 @@ package repository
 
 import (
 	"fmt"
-	"invservice/models"
+	"invservice/internal/logger"
+	"invservice/internal/models"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -41,6 +42,7 @@ func (r *inventoryRepository) CreateResource(name, resType, description string) 
 func (r *inventoryRepository) ListResources() ([]models.Resource, error) {
 	var resources []models.Resource
 	if err := r.db.Find(&resources).Error; err != nil {
+		logger.Error("Failed to list resources: ", err)
 		return nil, err
 	}
 	return resources, nil
@@ -49,10 +51,12 @@ func (r *inventoryRepository) ListResources() ([]models.Resource, error) {
 func (r *inventoryRepository) GetResourceByID(id string) (*models.Resource, error) {
 	uid, err := uuid.Parse(id)
 	if err != nil {
+		logger.Error("Invalid UUID format for GetResourceByID: ", err)
 		return nil, fmt.Errorf("invalid uuid format: %w", err)
 	}
 	var resource models.Resource
 	if err := r.db.First(&resource, "resource_id = ?", uid).Error; err != nil {
+		logger.Error("Failed to get resource by ID: ", err)
 		return nil, err
 	}
 	return &resource, nil
@@ -61,16 +65,19 @@ func (r *inventoryRepository) GetResourceByID(id string) (*models.Resource, erro
 func (r *inventoryRepository) UpdateResourceStatus(resourceID string, newStatus string) (*models.Resource, error) {
 	uid, err := uuid.Parse(resourceID)
 	if err != nil {
+		logger.Error("Invalid UUID format in UpdateResourceStatus: ", err)
 		return nil, fmt.Errorf("invalid uuid format: %w", err)
 	}
 
 	var resource models.Resource
 	if err := r.db.First(&resource, "resource_id = ?", uid).Error; err != nil {
+		logger.Error("Resource not found in UpdateResourceStatus: ", err)
 		return nil, err
 	}
 
 	resource.Status = newStatus
 	if err := r.db.Save(&resource).Error; err != nil {
+		logger.Error("Failed to update resource status: ", err)
 		return nil, err
 	}
 
@@ -80,15 +87,18 @@ func (r *inventoryRepository) UpdateResourceStatus(resourceID string, newStatus 
 func (r *inventoryRepository) DeleteResource(resourceID string) error {
 	uid, err := uuid.Parse(resourceID)
 	if err != nil {
+		logger.Error("Invalid UUID format in DeleteResource: ", err)
 		return fmt.Errorf("invalid uuid format: %w", err)
 	}
 
 	result := r.db.Delete(&models.Resource{}, "resource_id = ?", uid)
 	if result.Error != nil {
+		logger.Error("Failed to delete resource: ", result.Error)
 		return result.Error
 	}
 
 	if result.RowsAffected == 0 {
+		logger.Error("No resource found to delete")
 		return gorm.ErrRecordNotFound
 	}
 

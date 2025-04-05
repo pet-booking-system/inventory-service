@@ -3,8 +3,9 @@ package service
 import (
 	"errors"
 	"fmt"
+	"invservice/internal/logger"
+	"invservice/internal/models"
 	"invservice/internal/repository"
-	"invservice/models"
 
 	"gorm.io/gorm"
 )
@@ -47,6 +48,7 @@ func (s *inventoryService) CheckAvailability(resourceID string) (bool, error) {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return false, err
 		}
+		logger.Error("Failed to check availability: %w", err)
 		return false, err
 	}
 	if resource.Status == "available" {
@@ -63,6 +65,7 @@ func (s *inventoryService) UpdateResourceStatus(resourceID string, newStatus str
 	}
 
 	if !allowedStatuses[newStatus] {
+		logger.Error("Invalid status: %w", newStatus)
 		return nil, fmt.Errorf("invalid status: %s", newStatus)
 	}
 

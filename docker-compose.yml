@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16
+    container_name: inventory_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: invservice
+    ports:
+      - "5433:5432"
+    volumes:
+      - inv_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d invservice"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  inventory:
+    build: .
+    container_name: inventory_app
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DBHOST: db
+      DBPORT: 5432
+      DBUSER: postgres
+      DBPASSWORD: postgres
+      DBNAME: invservice
+      DBSSLMODE: disable
+      TIMEZONE: Asia/Almaty
+    ports:
+      - "50051:50051"
+    command: ["/app"]
+
+volumes:
+  inv_pgdata:

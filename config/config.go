@@ -2,10 +2,7 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -20,9 +17,10 @@ type Config struct {
 }
 
 func LoadConfig() (*Config, error) {
-	if err := godotenv.Load(); err != nil {
-		log.Println("Предупреждение: не удалось загрузить .env файл, используются системные переменные")
-	}
+	// if err := godotenv.Load(); err != nil {
+	// 	log.Println("Предупреждение: не удалось загрузить .env файл, используются системные переменные")
+	// }
+	// this is for local development
 
 	cfg := &Config{
 		DBHost:     os.Getenv("DB_HOST"),
@@ -36,7 +34,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	if cfg.DBHost == "" || cfg.DBUser == "" || cfg.DBName == "" || cfg.DBPort == "" {
-		return nil, fmt.Errorf("необходимо задать все обязательные параметры для подключения к БД")
+		return nil, fmt.Errorf("need to set DB_HOST, DB_USER, DB_NAME, DB_PORT")
 	}
 
 	return cfg, nil

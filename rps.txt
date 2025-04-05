@@ -1,0 +1,40 @@
+ghz --insecure \
+>   --proto="C:/Users/Maksat/Desktop/git/pet projects/proto-definitions/inventory/inventory.proto" \
+>   --call=inventory.InventoryService.ListResources \
+>   --concurrency=50 \
+>   --total=1000 \
+>   -d '{}' \      
+>   localhost:50051
+3fb40ca8873e
+            Summary:
+  Count:        1000
+  Total:        5.54 s
+  Slowest:      982.24 ms
+  Fastest:      0 ns
+  Average:      252.72 ms
+  Requests/sec: 180.56
+
+Response time histogram:
+  0.000   [24]  |∎∎
+  98.223  [502] |∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎∎
+  196.447 [47]  |∎∎∎∎
+  294.670 [24]  |∎∎
+  392.894 [39]  |∎∎∎
+  491.118 [82]  |∎∎∎∎∎∎∎
+  589.341 [81]  |∎∎∎∎∎∎
+  687.564 [134] |∎∎∎∎∎∎∎∎∎∎∎
+  785.788 [49]  |∎∎∎∎
+  884.011 [13]  |∎
+  982.235 [5]   |
+
+Latency distribution:
+  10 % in 1.29 ms
+  25 % in 8.00 ms
+  50 % in 62.99 ms
+  75 % in 525.86 ms
+  90 % in 680.64 ms
+  95 % in 698.10 ms
+  99 % in 829.60 ms
+
+Status code distribution:
+  [OK]   1000 responses
