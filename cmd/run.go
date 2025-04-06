@@ -11,7 +11,7 @@ import (
 	"invservice/internal/server"
 	"invservice/internal/service"
 
-	inventorypb "github.com/azhaxyly/proto-definitions/inventory"
+	inventorypb "github.com/pet-booking-system/proto-definitions/inventory"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

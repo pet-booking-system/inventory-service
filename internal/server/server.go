@@ -8,7 +8,7 @@ import (
 	"invservice/internal/logger"
 	"invservice/internal/service"
 
-	inventorypb "github.com/azhaxyly/proto-definitions/inventory"
+	inventorypb "github.com/pet-booking-system/proto-definitions/inventory"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"

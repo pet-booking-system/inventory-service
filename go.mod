@@ -3,8 +3,8 @@ module invservice
 go 1.23.4
 
 require (
-	github.com/azhaxyly/proto-definitions v1.0.3
 	github.com/google/uuid v1.6.0
+	github.com/pet-booking-system/proto-definitions v1.0.4
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/grpc v1.71.0
 	gorm.io/driver/postgres v1.5.11
