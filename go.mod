@@ -4,7 +4,7 @@ go 1.23.4
 
 require (
 	github.com/google/uuid v1.6.0
-	github.com/pet-booking-system/proto-definitions v1.0.4
+	github.com/pet-booking-system/proto-definitions v1.0.6
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/grpc v1.71.0
 	gorm.io/driver/postgres v1.5.11

@@ -48,7 +48,6 @@ func Run() {
 	if err != nil {
 		log.Fatalf("Error opening port: %v", err)
 	}
-
 	logger.Info("Inventory service started on port ", cfg.GRPCPort)
 
 	if err := grpcServer.Serve(lis); err != nil {
