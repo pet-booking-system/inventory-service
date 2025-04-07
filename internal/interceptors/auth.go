@@ -22,8 +22,12 @@ var protectedMethods = map[string]string{
 	"/inventory.InventoryService/DeleteResource":       "admin",
 }
 
+type contextKey string
+
+const UserIDKey contextKey = "userID"
+
 type AuthResponse struct {
-	UserID    int64  `json:"user_id"`
+	UserID    string `json:"user_id"`
 	Role      string `json:"role"`
 	ExpiresAt string `json:"expiresAt"`
 }
@@ -94,6 +98,8 @@ func AuthInterceptor() grpc.UnaryServerInterceptor {
 				logger.Info("Permission denied: required role ", requiredRole, ", but got ", authResp.Role)
 				return nil, status.Error(codes.PermissionDenied, "insufficient permissions")
 			}
+
+			ctx = context.WithValue(ctx, UserIDKey, authResp.UserID)
 		}
 
 		return handler(ctx, req)

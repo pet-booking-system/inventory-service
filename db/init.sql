@@ -1,3 +1,5 @@
+ALTER DATABASE invservice SET timezone TO 'Asia/Almaty';
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TYPE resource_status AS ENUM ('available', 'booked', 'unavailable');

@@ -7,6 +7,7 @@ import (
 
 	"invservice/config"
 	"invservice/internal/interceptors"
+	"invservice/internal/logger"
 	"invservice/internal/repository"
 	"invservice/internal/server"
 	"invservice/internal/service"
@@ -48,7 +49,7 @@ func Run() {
 		log.Fatalf("Error opening port: %v", err)
 	}
 
-	log.Printf("Inventory gRPC server running on port: %s", cfg.GRPCPort)
+	logger.Info("Inventory service started on port ", cfg.GRPCPort)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("Error starting gRPC server: %v", err)
